@@ -2,7 +2,7 @@ import App from './App';
 
 const application = new App();
 
-const serv = application.getServer();
+const serv = application.server;
 
 const PORT = 3000;
 

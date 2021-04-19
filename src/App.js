@@ -5,13 +5,23 @@ import moks from './moks';
 
 export default class App {
   constructor() {
-    // tcp://2.tcp.ngrok.io:16417
-    this.client = net.createConnection({
-      host: '2.tcp.ngrok.io',
-      port: '16417',
+    this.server = net.createServer((con) => {
+      con.on('data', (data) => {
+        console.log(data.toString());
+        this.container.esvazia();
+        console.log(this.container.getContainer());
+        this.container.setCheio(false);
+        this.encheContainer(this.container);
+      });
     });
 
-    this.container = new Container(1);
+    // tcp://2.tcp.ngrok.io:16249
+    this.client = net.createConnection({
+      host: '2.tcp.ngrok.io',
+      port: '16249',
+    });
+
+    this.container = new Container('555');
     if (!this.container.getIsCheio()) {
       this.encheContainer(this.container);
     }
@@ -23,21 +33,13 @@ export default class App {
       const sec = `${math}000`;
       setTimeout(() => {
         const ret = container.setLixo(lixo);
+        console.log(`${this.container.getContainer().lixos.length}%`);
         if (!ret) {
+          console.log('cheio!');
           container.setCheio(true);
-          this.client.write(`CHEIO ${container.getContainer().id}`);
+          this.client.write(`CHEIO ${container.getContainer().id}\r\n`);
         }
       }, sec);
-    });
-  }
-
-  getServer() {
-    return net.createServer((con) => {
-      con.on('data', (data) => {
-        if (data.split(' ')[0] === 'CHEGUEI_CONTAINER') {
-          this.container.esvazia();
-        }
-      });
     });
   }
 }
