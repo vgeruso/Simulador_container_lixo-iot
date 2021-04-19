@@ -7,7 +7,7 @@ export default class App {
   constructor() {
     this.server = net.createServer((con) => {
       con.on('data', (data) => {
-        console.log(data);
+        console.log(data.toString());
         this.container.esvazia();
         console.log(this.container.getContainer());
         this.container.setCheio(false);
@@ -15,10 +15,10 @@ export default class App {
       });
     });
 
-    // tcp://4.tcp.ngrok.io:13152
+    // tcp://2.tcp.ngrok.io:16249
     this.client = net.createConnection({
-      host: '4.tcp.ngrok.io',
-      port: '13152',
+      host: '2.tcp.ngrok.io',
+      port: '16249',
     });
 
     this.container = new Container('555');
@@ -33,7 +33,7 @@ export default class App {
       const sec = `${math}000`;
       setTimeout(() => {
         const ret = container.setLixo(lixo);
-        console.log(ret);
+        console.log(`${this.container.getContainer().lixos.length}%`);
         if (!ret) {
           console.log('cheio!');
           container.setCheio(true);
