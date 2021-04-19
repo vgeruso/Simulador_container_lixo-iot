@@ -1,7 +1,9 @@
-import app from './app';
+import App from './App';
 
-const PORT = 3333;
+const application = new App();
 
-app.listen(PORT, () => {
-  console.log('Server on'); // eslint-disable-line
-});
+const serv = application.getServer();
+
+const PORT = 3000;
+
+serv.listen(PORT);
